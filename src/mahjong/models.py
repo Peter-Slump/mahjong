@@ -23,7 +23,7 @@ class Game(object):
         for player in players:
             assert isinstance(player, Player)
 
-        self._players = players
+        self.players = players
 
 
 class Player(object):

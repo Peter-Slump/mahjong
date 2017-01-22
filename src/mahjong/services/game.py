@@ -17,7 +17,8 @@ def create(players):
     assert len(players) == 4, 'Please supply 4 players'
 
     for player in players:
-        assert isinstance(player, models.Player)
+        assert isinstance(player, models.Player), \
+            'Players should be of type Player'
 
     return models.Game(players=players)
 
@@ -31,7 +32,7 @@ def choose_first_dealer(game):
     :type game: models.Game
     :rtype: models.Game
     """
-    assert game.current_dealer is None, 'Dealer already started'
+    assert game.current_dealer is None, 'Dealer already set'
     assert game.players is not None, 'Please set players first'
 
     game.current_dealer = random.choice(game.players)
@@ -67,4 +68,4 @@ def get_dice_result(nr_dices=1):
     :param int nr_dices: Nr. of dices to get a result from
     :return: tuple
     """
-    return tuple(random.randint(1,6) for _ in range(1, nr_dices))
+    return tuple(random.randint(1,6) for _ in range(0, nr_dices))
