@@ -75,6 +75,17 @@ def open_wall(table, dealer_wind, dices):
     return table
 
 
+def get_stones(table, nr_stones):
+    """
+    Get one or more stones from the wall.
+
+    :type table: models.Table
+    :param int nr_stones:
+    :rtype: tuple
+    """
+    return tuple(table.stone_stack.pop() for _ in range(0, nr_stones))
+
+
 def _define_death_wall(table):
     """
     Pick the first 8 sets of stones and set it as death wall.
@@ -135,14 +146,3 @@ def _select_wall_to_open(table, dealer_wind, dices):
     table.current_wall = models.ALL_WINDS[wind_index - 1]
 
     return table
-
-
-def get_stones(table, nr_stones):
-    """
-    Get one or more stones from the wall.
-
-    :type table: models.Table
-    :param int nr_stones:
-    :rtype: tuple
-    """
-    return tuple(table.stone_stack.pop() for _ in range(0, nr_stones))
