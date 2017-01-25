@@ -23,9 +23,13 @@ setup(
             'bumpversion',
         ],
     },
-    setup_requires=[],
+    setup_requires=[
+        'pytest-runner',
+        'bumpversion',
+    ],
     install_requires=[],
     tests_require=[
+        'pytest',
         'factory_boy',
         'mock',
     ],
