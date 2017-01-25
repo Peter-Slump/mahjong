@@ -39,3 +39,6 @@ class Table(object):
 
     walls = None
     current_wall = None
+    position_in_wall = None
+    death_wall = None
+    stone_stack = None

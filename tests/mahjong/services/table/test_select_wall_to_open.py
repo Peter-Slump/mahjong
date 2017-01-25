@@ -13,7 +13,7 @@ class MahjongTableSelectWallToOpenTestCase(unittest.TestCase):
         self.table = mahjong.services.table.create()
 
     def test_correct_wall_is_selected(self):
-        table = mahjong.services.table.select_wall_to_open(
+        table = mahjong.services.table._select_wall_to_open(
             table=self.table,
             dealer_wind=models.WIND_EAST,
             dices=(2, 4, 5)  # 11
@@ -33,7 +33,7 @@ class MahjongTableSelectWallToOpenTestCase(unittest.TestCase):
         self.assertEqual(table.current_wall, models.WIND_WEST)
 
     def test_correct_wall_is_selected_non_east_dealer(self):
-        table = mahjong.services.table.select_wall_to_open(
+        table = mahjong.services.table._select_wall_to_open(
             table=self.table,
             dealer_wind=models.WIND_WEST,
             dices=(1, 1, 1)  # 3
@@ -47,7 +47,7 @@ class MahjongTableSelectWallToOpenTestCase(unittest.TestCase):
         self.assertEqual(table.current_wall, models.WIND_EAST)
 
     def test_lower_than_four(self):
-        table = mahjong.services.table.select_wall_to_open(
+        table = mahjong.services.table._select_wall_to_open(
             table=self.table,
             dealer_wind=models.WIND_EAST,
             dices=(1, 1, 1)  # 3

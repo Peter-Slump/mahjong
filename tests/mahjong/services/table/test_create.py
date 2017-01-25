@@ -25,3 +25,18 @@ class MahjongTableCreateTestCase(MockTestCaseMixin, unittest.TestCase):
         self.assertEqual(len(table.walls[models.WIND_SOUTH]), 36)
         self.assertEqual(len(table.walls[models.WIND_WEST]), 36)
         self.assertEqual(len(table.walls[models.WIND_NORTH]), 36)
+
+    def test_all_stones_available(self):
+        table = mahjong.services.table.create()
+
+        self.assertListEqual(
+            sorted(
+                table.walls[models.WIND_EAST] +
+                table.walls[models.WIND_SOUTH] +
+                table.walls[models.WIND_WEST] +
+                table.walls[models.WIND_NORTH]
+            ),
+            sorted(
+                mahjong.services.table.get_shuffled_stones()
+            )
+        )
