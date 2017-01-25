@@ -19,8 +19,8 @@ setup(
     include_package_data=True,
     extras_require={
         'dev': [
-            'factory_boy',
             'bumpversion',
+            'flake8'
         ],
     },
     setup_requires=[

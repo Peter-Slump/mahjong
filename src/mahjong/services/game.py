@@ -52,7 +52,8 @@ def start(game):
     assert game.prevailing_wind is None, 'Game already started'
 
     choose_first_dealer(game)
-    game.prevailing_wind = models.WIND_EAST  # game always start with the south wind
+    # game always start with the south wind
+    game.prevailing_wind = models.WIND_EAST
 
     for player in game.players:
         mahjong.services.player.reset(player=player)
@@ -68,4 +69,4 @@ def get_dice_result(nr_dices=1):
     :param int nr_dices: Nr. of dices to get a result from
     :return: tuple
     """
-    return tuple(random.randint(1,6) for _ in range(0, nr_dices))
+    return tuple(random.randint(1, 6) for _ in range(0, nr_dices))
