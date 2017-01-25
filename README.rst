@@ -3,6 +3,6 @@ Mahjong
 =======
 
 
-Version: 0.0.1
+Version: 0.1.0
 
 A library for the famous game Mahjong.
