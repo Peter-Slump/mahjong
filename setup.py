@@ -22,6 +22,9 @@ setup(
             'bumpversion',
             'flake8'
         ],
+        'docs': [
+            'Sphinx'
+        ]
     },
     setup_requires=[
         'pytest-runner',

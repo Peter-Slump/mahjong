@@ -8,11 +8,23 @@ import mahjong.services.table
 
 def create(players):
     """
-    Create a new game
+    To create a game instantiate four models of the type
+    :py:class:`mahjong.models.Player` and call the service.
+
+    >>> from mahjong import models
+    >>> import mahjong.services.game
+    >>> players = [
+    ...     models.Player(name='John Doe'),
+    ...     models.Player(name='Jane'),
+    ...     models.Player(name='Peter'),
+    ...     models.Player(name='Josh')
+    ... ]
+    >>> mahjong.services.game.create(players=players)
+    Mahjong game with: John Doe, Jane, Peter, Josh
 
     :param list players: List of 4 players
     :return: The created game
-    :rtype: models.Game
+    :rtype: :py:class:`mahjong.models.Game`
     """
     assert len(players) == 4, 'Please supply 4 players'
 
@@ -66,6 +78,7 @@ def start(game):
 def get_dice_result(nr_dices=1):
     """
     Get dice result
+
     :param int nr_dices: Nr. of dices to get a result from
     :return: tuple
     """

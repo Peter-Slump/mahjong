@@ -25,8 +25,16 @@ class Game(object):
 
         self.players = players
 
+    def __repr__(self):
+        return 'Mahjong game with: {}'.format(', '.join(map(str, self.players)))
+
 
 class Player(object):
+    """
+    Represents a player in the game.
+
+    :param str name: Name of the player
+    """
 
     name = None
     hand = None
@@ -34,6 +42,8 @@ class Player(object):
     def __init__(self, name):
         self.name = name
 
+    def __repr__(self):
+        return self.name
 
 class Table(object):
 
