@@ -1,10 +1,11 @@
 from __future__ import absolute_import
 
-import mock
 import unittest
 
+import mock
+
 from mahjong import models
-from tests.utils.mixins import MockTestCaseMixin
+from mahjong.utils.test.mixins import MockTestCaseMixin
 
 import mahjong.services.game
 

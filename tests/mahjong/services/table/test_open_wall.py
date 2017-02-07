@@ -3,10 +3,10 @@ from __future__ import absolute_import
 import unittest
 
 from mahjong import models
-from tests.utils.mixins import MockTestCaseMixin
+from mahjong.utils.test.mixins import MockTestCaseMixin
 
-import mahjong.services.table
 import mahjong.services.stone
+import mahjong.services.table
 
 
 class MahjongTableOpenWall(MockTestCaseMixin, unittest.TestCase):
