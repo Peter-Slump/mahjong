@@ -6,8 +6,8 @@ from mahjong import models
 
 from tests.utils.mixins import MockTestCaseMixin
 
-import mahjong.services.stone
 import mahjong.services.table
+import mahjong.services.stone
 
 
 class MahjongTableCreateTestCase(MockTestCaseMixin, unittest.TestCase):

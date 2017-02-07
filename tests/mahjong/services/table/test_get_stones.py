@@ -13,7 +13,7 @@ class MahjongTableGetStones(unittest.TestCase):
         self.table = mahjong.services.table.open_wall(
             table=mahjong.services.table.create(),
             dealer_wind=models.WIND_EAST,
-            dices=(1,1,1)
+            dices=(1, 1, 1)
         )
 
     def test_get_last_tone_of_stack(self):

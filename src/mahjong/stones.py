@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 DOTS_ONE = 'dots_1'
 DOTS_TWO = 'dots_2'
 DOTS_THREE = 'dots_3'

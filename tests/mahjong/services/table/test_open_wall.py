@@ -22,7 +22,7 @@ class MahjongTableOpenWall(MockTestCaseMixin, unittest.TestCase):
         self.mock_select_wall_to_open.return_value = self.table
 
     def test_correct_position_in_same_wall(self):
-        dices = (2, 2, 2) # 6 == position 12 in stack from right
+        dices = (2, 2, 2)  # 6 == position 12 in stack from right
         # One wall has 36 stones == 36 - 12 == 24
         # zero index == 24 - 1 == 23
         table = mahjong.services.table.open_wall(table=self.table,
@@ -43,8 +43,3 @@ class MahjongTableOpenWall(MockTestCaseMixin, unittest.TestCase):
             sorted(table.stone_stack),
             sorted(mahjong.services.stone.get_all_shuffled())
         )
-
-
-
-
-

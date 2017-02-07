@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 from random import shuffle
 
-from mahjong import stones
+from mahjong.stones import STONE_NUMBERS
 
 
 def get_all_shuffled():
@@ -12,8 +12,8 @@ def get_all_shuffled():
     :rtype: list
     """
     all_stones = []
-    for stone_, number in stones.STONE_NUMBERS.items():
-        all_stones += number * [stone_]
+    for stone, number in STONE_NUMBERS.items():
+        all_stones += number * [stone]
 
     shuffle(all_stones)
 

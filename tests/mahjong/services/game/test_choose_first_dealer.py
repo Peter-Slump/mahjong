@@ -10,12 +10,12 @@ import mahjong.services.game
 class MahjongGameChooseFirstDealerTestCase(unittest.TestCase):
 
     def setUp(self):
-        self.game = models.Game(players=(
+        self.game = models.Game(players=[
             models.Player(name='John Doe'),
             models.Player(name='Jane'),
             models.Player(name='Harvey Peterson'),
             models.Player(name='Emily Dalson')
-        ))
+        ])
 
     def test_current_dealer_is_one_of_the_players(self):
         game = mahjong.services.game.choose_first_dealer(game=self.game)

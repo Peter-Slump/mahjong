@@ -162,4 +162,3 @@ texinfo_documents = [
 
 # doctest_test_doctest_blocks = 'default'
 # doctest_path = ['../src']
-

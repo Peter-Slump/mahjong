@@ -1,3 +1,5 @@
+from __future__ import absolute_import
+
 WIND_EAST = 'east'
 WIND_NORTH = 'north'
 WIND_WEST = 'west'
