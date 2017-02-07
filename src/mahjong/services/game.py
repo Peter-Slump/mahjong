@@ -22,6 +22,9 @@ def create(players):
     >>> mahjong.services.game.create(players=players)
     Mahjong game with: John Doe, Jane, Peter, Josh
 
+    The position of the players in the list also determines the table position
+    for the player.
+
     :param list players: List of 4 players
     :return: The created game
     :rtype: :py:class:`mahjong.models.Game`
@@ -35,26 +38,24 @@ def create(players):
     return models.Game(players=players)
 
 
-def choose_first_dealer(game):
-    """
-    Choose the first dealer.
-
-    One of the players is selected randomly as dealer.
-
-    :type game: models.Game
-    :rtype: models.Game
-    """
-    assert game.current_dealer is None, 'Dealer already set'
-    assert game.players is not None, 'Please set players first'
-
-    game.current_dealer = random.choice(game.players)
-
-    return game
-
-
 def start(game):
     """
-    Start the game
+    Starting the game will set the prevailing wind to east, determines the
+    current dealer (if not already determined) and creates a new
+    :py:class:`mahjong.models.Table`.
+
+    >>> from mahjong import models
+    >>> import mahjong.services.game
+    >>> players = [
+    ...     models.Player(name='John Doe'),
+    ...     models.Player(name='Jane'),
+    ...     models.Player(name='Peter'),
+    ...     models.Player(name='Josh')
+    ... ]
+    >>> game = mahjong.services.game.create(players=players)
+    >>> game = mahjong.services.game.start(game=game)
+    >>> game.prevailing_wind
+    'east'
 
     :param game: Game to start
     :type game: mahjong.models.Game
@@ -63,7 +64,8 @@ def start(game):
     """
     assert game.prevailing_wind is None, 'Game already started'
 
-    choose_first_dealer(game)
+    if game.current_dealer is None:
+        choose_first_dealer(game)
     # game always start with the south wind
     game.prevailing_wind = models.WIND_EAST
 
@@ -71,6 +73,39 @@ def start(game):
         mahjong.services.player.reset(player=player)
 
     game.table = mahjong.services.table.create()
+
+    return game
+
+
+def choose_first_dealer(game):
+    """
+    Determine the first dealer (optional).
+
+    This service is optional, if not called it will be called within
+    :py:func:`mahjong.services.game.start`.
+
+    One of the players will be selected randomly as dealer.
+
+    >>> from mahjong import models
+    >>> import mahjong.services.game
+    >>> players = [
+    ...     models.Player(name='John Doe'),
+    ...     models.Player(name='Jane'),
+    ...     models.Player(name='Peter'),
+    ...     models.Player(name='Josh')
+    ... ]
+    >>> game = mahjong.services.game.create(players=players)
+    >>> game = mahjong.services.game.choose_first_dealer(game=game)
+    >>> game.current_dealer  # doctest: +SKIP
+    Jane
+
+    :type game: :py:class:`mahjong.models.Game`
+    :rtype: :py:class:`mahjong.models.Game`
+    """
+    assert game.current_dealer is None, 'Dealer already set'
+    assert game.players is not None, 'Please set players first'
+
+    game.current_dealer = random.choice(game.players)
 
     return game
 

@@ -2,12 +2,11 @@ from __future__ import absolute_import
 
 import unittest
 
-from mahjong import (
-    models,
-    stones
-)
+from mahjong import models
+
 from tests.utils.mixins import MockTestCaseMixin
 
+import mahjong.services.stone
 import mahjong.services.table
 
 
@@ -37,6 +36,6 @@ class MahjongTableCreateTestCase(MockTestCaseMixin, unittest.TestCase):
                 table.walls[models.WIND_NORTH]
             ),
             sorted(
-                mahjong.services.table.get_shuffled_stones()
+                mahjong.services.stone.get_all_shuffled()
             )
         )

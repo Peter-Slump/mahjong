@@ -6,27 +6,27 @@ from collections import defaultdict
 
 from mahjong import stones
 
-import mahjong.services.table
+import mahjong.services.stone
 
 
-class MahjongTableGetShuffledStonesTestCase(unittest.TestCase):
+class MahjongStoneGetAllShuffledTestCase(unittest.TestCase):
 
     def test_number_of_returned_items_is_correct(self):
-        result = mahjong.services.table.get_shuffled_stones()
+        result = mahjong.services.stone.get_all_shuffled()
 
         self.assertEqual(len(result), 144)
 
     def test_results_differs(self):
 
-        first_result = mahjong.services.table.get_shuffled_stones()
-        second_result = mahjong.services.table.get_shuffled_stones()
+        first_result = mahjong.services.stone.get_all_shuffled()
+        second_result = mahjong.services.stone.get_all_shuffled()
 
         self.assertNotEqual(first_result, second_result)
 
         self.assertListEqual(sorted(first_result), sorted(second_result))
 
     def test_all_stones_available_in_correct_amount(self):
-        result = mahjong.services.table.get_shuffled_stones()
+        result = mahjong.services.stone.get_all_shuffled()
 
         result_dict = defaultdict(lambda: 0)
 

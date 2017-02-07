@@ -26,7 +26,9 @@ class Game(object):
         self.players = players
 
     def __repr__(self):
-        return 'Mahjong game with: {}'.format(', '.join(map(str, self.players)))
+        return 'Mahjong game with: {}'.format(
+            ', '.join(map(str, self.players))
+        )
 
 
 class Player(object):
@@ -45,7 +47,38 @@ class Player(object):
     def __repr__(self):
         return self.name
 
+
 class Table(object):
+    """
+    Represents the current state of the table including all the walls and keeps
+    track of the position in the wall.
+
+    For convenience it has a stack of all stones which are able to be used in
+    the game.
+
+    Currently only a full table for the Hong Kong version of the game is
+    supported: 144 stones and 4 winds.
+
+    :param list stones: All stones which will be used to build the walls.
+    """
+
+    def __init__(self, stones):
+        nr_stones = len(stones)
+        nr_winds = len(ALL_WINDS)
+
+        assert nr_stones == 144, 'Please supply 144 stones.'
+        assert nr_stones % nr_winds == 0, \
+            'The number of stones should be dividable by the number of winds.'
+
+        stones_per_wall = int(nr_stones / nr_winds)
+        winds = list(ALL_WINDS)
+        self.walls = dict()
+        start = None
+        for i in range(0, nr_stones+1, stones_per_wall):
+            stop = i
+            if start is not None:
+                self.walls[winds.pop(0)] = stones[start:stop]
+            start = stop
 
     walls = None
     current_wall = None

@@ -7,3 +7,6 @@ Models
 
 .. autoclass:: mahjong.models.Game
     :members:
+
+.. autoclass:: mahjong.models.Table
+    :members:

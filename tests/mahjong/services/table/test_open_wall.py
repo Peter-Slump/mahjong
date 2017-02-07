@@ -6,6 +6,7 @@ from mahjong import models
 from tests.utils.mixins import MockTestCaseMixin
 
 import mahjong.services.table
+import mahjong.services.stone
 
 
 class MahjongTableOpenWall(MockTestCaseMixin, unittest.TestCase):
@@ -40,7 +41,7 @@ class MahjongTableOpenWall(MockTestCaseMixin, unittest.TestCase):
         self.assertEqual(len(table.stone_stack), 144)
         self.assertListEqual(
             sorted(table.stone_stack),
-            sorted(mahjong.services.table.get_shuffled_stones())
+            sorted(mahjong.services.stone.get_all_shuffled())
         )
 
 

@@ -1,42 +1,17 @@
-from random import shuffle
+from __future__ import absolute_import
 
 from mahjong import models
-from mahjong import stones
+
+import mahjong.services.stone
 
 
 def create():
     """
-    Create new table
+    Initializes a new :py:class:`mahjong.models.Table`.
 
     :rtype: models.Table
     """
-
-    table = models.Table()
-
-    shuffled_stones = get_shuffled_stones()
-    table.walls = {
-        models.WIND_EAST: shuffled_stones[0:36],
-        models.WIND_SOUTH: shuffled_stones[36:72],
-        models.WIND_WEST: shuffled_stones[72:108],
-        models.WIND_NORTH: shuffled_stones[108:144]
-    }
-
-    return table
-
-
-def get_shuffled_stones():
-    """
-    Get a set of shuffled stones
-
-    :rtype: list
-    """
-    all_stones = []
-    for stone, number in stones.STONE_NUMBERS.items():
-        all_stones += number * [stone]
-
-    shuffle(all_stones)
-
-    return all_stones
+    return models.Table(stones=mahjong.services.stone.get_all_shuffled())
 
 
 def open_wall(table, dealer_wind, dices):

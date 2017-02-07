@@ -4,10 +4,9 @@ Game
 
 How to use the library to play a game of (Hong Kong) Mahjong
 
-Create a game
-=============
+Setup a new game
+================
 
 .. automodule:: mahjong.services.game
-    :members: create
-
+    :members: create, choose_first_dealer, start
 

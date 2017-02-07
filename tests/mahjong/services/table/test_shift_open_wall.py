@@ -6,10 +6,11 @@ from mahjong import models
 
 import mahjong.services.table
 
+
 class MahjongTableShiftOpenWall(unittest.TestCase):
 
     def setUp(self):
-        self.table = models.Table()
+        self.table = mahjong.services.table.create()
         self.table.current_wall = models.WIND_SOUTH
 
     def test_wall_is_shifted_to_right_set(self):
