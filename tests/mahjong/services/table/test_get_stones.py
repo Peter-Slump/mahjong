@@ -4,17 +4,22 @@ import unittest
 
 from mahjong import models
 
+import mahjong.services.game
 import mahjong.services.table
 
 
 class MahjongTableGetStones(unittest.TestCase):
 
     def setUp(self):
-        self.table = mahjong.services.table.open_wall(
-            table=mahjong.services.table.create(),
-            dealer_wind=models.WIND_EAST,
-            dices=(1, 1, 1)
-        )
+        self.game = mahjong.services.game.create(players=[
+            models.Player(name='John'),
+            models.Player(name='Jane'),
+            models.Player(name='Charles'),
+            models.Player(name='Chris'),
+        ])
+        mahjong.services.game.start(game=self.game)
+
+        self.table, dice = mahjong.services.table.open_wall(game=self.game)
 
     def test_get_last_tone_of_stack(self):
         expected_stone = self.table.stone_stack[-1]

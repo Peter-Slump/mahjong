@@ -2,6 +2,7 @@ from __future__ import absolute_import
 
 from mahjong import models
 
+import mahjong.services.dice
 import mahjong.services.stone
 
 
@@ -14,19 +15,30 @@ def create():
     return models.Table(stones=mahjong.services.stone.get_all_shuffled())
 
 
-def open_wall(table, dealer_wind, dices):
+def open_wall(game):
     """
-    Find the place to open the wall
+    Before each round the wall have to be opened. 3 dices will be rolled and the
+    total of the dices determines which wall will be opened first. Starting from
+    the dealers wall the walls will be counted counter clock-wise until the
+    number of eyes on the dices is reached.
 
-    :type table: models.Table
-    :param tuple dices:
-    :rtype: models.Table
+    From the same dice result the position in the opened wall will be
+    determined by counting the stones from right to left. From that position
+    the stones will be picked.
+
+
+
+    :param :py:class:`mahjong.models.Game` game: The game to open the wall for.
+    :rtype tuple:
+    :return: :py:class:`mahjong.models.Game`, tuple( *dices )
     """
+    table = game.table
+    dices = mahjong.services.dice.roll(number_dice=3)
+
     assert table.position_in_wall is None, 'Wall is already opened'
-    assert len(dices) is 3, 'Give three dices'
 
-    table = _select_wall_to_open(table=table,
-                                 dealer_wind=dealer_wind,
+    table = _select_wall_to_open(table=game.table,
+                                 dealer_wind=game.prevailing_wind,
                                  dices=dices)
 
     dice_total = sum(dices)
@@ -47,7 +59,7 @@ def open_wall(table, dealer_wind, dices):
 
     table.stone_stack = stone_stack
 
-    return table
+    return table, dices
 
 
 def get_stones(table, nr_stones):

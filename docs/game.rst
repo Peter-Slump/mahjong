@@ -9,4 +9,3 @@ Setup a new game
 
 .. automodule:: mahjong.services.game
     :members: create, choose_first_dealer, start
-

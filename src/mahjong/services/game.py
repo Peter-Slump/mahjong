@@ -110,13 +110,3 @@ def choose_first_dealer(game):
     game.current_dealer = random.choice(game.players)
 
     return game
-
-
-def get_dice_result(nr_dices=1):
-    """
-    Get dice result
-
-    :param int nr_dices: Nr. of dices to get a result from
-    :return: tuple
-    """
-    return tuple(random.randint(1, 6) for _ in range(0, nr_dices))
