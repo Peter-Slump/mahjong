@@ -1,6 +1,6 @@
 from __future__ import absolute_import
 
-from mahjong import models
+from mahjong.models import ALL_WINDS, Table
 
 import mahjong.services.dice
 import mahjong.services.stone
@@ -10,9 +10,9 @@ def create():
     """
     Initializes a new :py:class:`mahjong.models.Table`.
 
-    :rtype: models.Table
+    :rtype: Table
     """
-    return models.Table(stones=mahjong.services.stone.get_all_shuffled())
+    return Table(stones=mahjong.services.stone.get_all_shuffled())
 
 
 def open_wall(game):
@@ -26,51 +26,22 @@ def open_wall(game):
     determined by counting the stones from right to left. From that position
     the stones will be picked.
 
-
-
     :param :py:class:`mahjong.models.Game` game: The game to open the wall for.
     :rtype tuple:
-    :return: :py:class:`mahjong.models.Game`, tuple( *dices )
+    :return: :py:class:`mahjong.models.Game`, tuple( *dice )
     """
     table = game.table
-    dices = mahjong.services.dice.roll(number_dice=3)
+    dice = mahjong.services.dice.roll(number_dice=3)
 
-    assert table.position_in_wall is None, 'Wall is already opened'
+    assert table.wall_index is None, 'Wall is already opened'
 
-    table = _select_wall_to_open(table=game.table,
+    table = _select_wall_to_open(table=table,
                                  dealer_wind=game.prevailing_wind,
-                                 dices=dices)
+                                 dices=dice)
 
-    dice_total = sum(dices)
+    table.wall_index = _select_stone_in_wall(table=table, dice=dice)
 
-    dice_total *= 2  # Stacks are two high
-
-    wall_length = len(table.walls[table.current_wall])
-    open_index = wall_length - dice_total - 1
-    table.position_in_wall = open_index
-
-    stone_stack = table.walls[table.current_wall][0:open_index]
-    for _ in range(0, len(models.ALL_WINDS) - 1):
-        _shift_open_wall(table)
-        stone_stack = table.walls[table.current_wall] + stone_stack
-
-    _shift_open_wall(table=table)
-    stone_stack = table.walls[table.current_wall][open_index:] + stone_stack
-
-    table.stone_stack = stone_stack
-
-    return table, dices
-
-
-def get_stones(table, nr_stones):
-    """
-    Get one or more stones from the wall.
-
-    :type table: models.Table
-    :param int nr_stones:
-    :rtype: tuple
-    """
-    return tuple(table.stone_stack.pop() for _ in range(0, nr_stones))
+    return table, dice
 
 
 def _define_death_wall(table):
@@ -87,26 +58,6 @@ def _define_death_wall(table):
     return table
 
 
-def _shift_open_wall(table):
-    """
-    Shift the open wall counter clock wise
-    :type table: models.Table
-    :rtype: models.Table
-    """
-    assert table.current_wall is not None, 'Please select wall to open first'
-
-    wall_index = models.ALL_WINDS.index(table.current_wall)
-
-    if wall_index == 0:
-        wall_index = len(models.ALL_WINDS) - 1
-    else:
-        wall_index -= 1
-
-    table.current_wall = models.ALL_WINDS[wall_index]
-
-    return table
-
-
 def _select_wall_to_open(table, dealer_wind, dices):
     """
     Select wall to open.
@@ -116,20 +67,37 @@ def _select_wall_to_open(table, dealer_wind, dices):
     :param tuple dices: two or three dices to sum
     :rtype: models.Table
     """
-    assert table.current_wall is None, 'Wall to open already selected'
+    assert table.wall_wind is None, 'Wall to open already selected'
     assert dealer_wind in table.walls.keys(), \
         'Dealer wind should be one of the wall winds.'
 
-    nr_winds = len(models.ALL_WINDS)
+    nr_winds = len(ALL_WINDS)
     total_of_dices = sum(dices)
     open_wall_ = total_of_dices % nr_winds
 
-    dealer_wind_index = models.ALL_WINDS.index(dealer_wind)
+    dealer_wind_index = ALL_WINDS.index(dealer_wind)
     wind_index = dealer_wind_index + open_wall_
 
     if wind_index > nr_winds:
         wind_index %= nr_winds
 
-    table.current_wall = models.ALL_WINDS[wind_index - 1]
+    table.wall_wind = ALL_WINDS[wind_index - 1]
 
     return table
+
+
+def _select_stone_in_wall(table, dice):
+    """
+    Get the index where the wall should be opened.
+
+    :param :py:class:`mahjong.models.Table' table:
+    :param tuple dice:
+    :return: int
+    """
+    dice_total = sum(dice)
+    dice_total *= 2  # Stacks are two high
+
+    wall = table.walls[table.wall_wind]
+    wall_length = len(wall)
+    open_index = wall_length - dice_total - 1
+    return open_index

@@ -1,11 +1,10 @@
 from __future__ import absolute_import
 
+import mock
 import unittest
 
-import mock
-
-from mahjong import models
-from mahjong.utils.test.mixins import MockTestCaseMixin
+from mahjong.models import Game, Player, WIND_EAST
+from tests.mixins import MockTestCaseMixin
 
 import mahjong.services.game
 
@@ -13,11 +12,11 @@ import mahjong.services.game
 class MahjongGameStartTestCase(MockTestCaseMixin, unittest.TestCase):
 
     def setUp(self):
-        self.game = models.Game(players=(
-            models.Player(name='John Doe'),
-            models.Player(name='Jane'),
-            models.Player(name='Harvey Peterson'),
-            models.Player(name='Emily Dalson')
+        self.game = Game(players=(
+            Player(name='John Doe'),
+            Player(name='Jane'),
+            Player(name='Harvey Peterson'),
+            Player(name='Emily Dalson')
         ))
 
         self.mock_table_create = self.setup_mock(
@@ -31,7 +30,7 @@ class MahjongGameStartTestCase(MockTestCaseMixin, unittest.TestCase):
         game = mahjong.services.game.start(game=self.game)
 
         self.assertEqual(game, self.game)
-        self.assertIsInstance(game, models.Game)
+        self.assertIsInstance(game, Game)
 
     def test_choose_first_player_is_called(self):
         mahjong.services.game.start(game=self.game)
@@ -57,10 +56,10 @@ class MahjongGameStartTestCase(MockTestCaseMixin, unittest.TestCase):
     def test_prevailing_wind_is_set(self):
         game = mahjong.services.game.start(game=self.game)
 
-        self.assertEqual(game.prevailing_wind, models.WIND_EAST)
+        self.assertEqual(game.prevailing_wind, WIND_EAST)
 
     def test_error_raised_when_prevailing_wind_is_already_set(self):
-        self.game.prevailing_wind = models.WIND_EAST
+        self.game.prevailing_wind = WIND_EAST
 
         with self.assertRaises(AssertionError) as e:
             mahjong.services.game.start(game=self.game)

@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import random
 
-from mahjong import models
+from mahjong.models import Game, Player, WIND_EAST
 
 import mahjong.services.player
 import mahjong.services.table
@@ -13,13 +13,13 @@ def create(players):
     To create a game instantiate four models of the type
     :py:class:`mahjong.models.Player` and call the service.
 
-    >>> from mahjong import models
+    >>> from mahjong.models import Player
     >>> import mahjong.services.game
     >>> players = [
-    ...     models.Player(name='John Doe'),
-    ...     models.Player(name='Jane'),
-    ...     models.Player(name='Peter'),
-    ...     models.Player(name='Josh')
+    ...     Player(name='John Doe'),
+    ...     Player(name='Jane'),
+    ...     Player(name='Peter'),
+    ...     Player(name='Josh')
     ... ]
     >>> mahjong.services.game.create(players=players)
     Mahjong game with: John Doe, Jane, Peter, Josh
@@ -34,10 +34,10 @@ def create(players):
     assert len(players) == 4, 'Please supply 4 players'
 
     for player in players:
-        assert isinstance(player, models.Player), \
+        assert isinstance(player, Player), \
             'Players should be of type Player'
 
-    return models.Game(players=players)
+    return Game(players=players)
 
 
 def start(game):
@@ -69,7 +69,7 @@ def start(game):
     if game.current_dealer is None:
         choose_first_dealer(game)
     # game always start with the south wind
-    game.prevailing_wind = models.WIND_EAST
+    game.prevailing_wind = WIND_EAST
 
     for player in game.players:
         mahjong.services.player.reset(player=player)

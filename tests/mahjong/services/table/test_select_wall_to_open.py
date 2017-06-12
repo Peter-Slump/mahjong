@@ -2,7 +2,7 @@ from __future__ import absolute_import
 
 import unittest
 
-from mahjong import models
+from mahjong.models import WIND_EAST, WIND_WEST
 
 import mahjong.services.table
 
@@ -15,7 +15,7 @@ class MahjongTableSelectWallToOpenTestCase(unittest.TestCase):
     def test_correct_wall_is_selected(self):
         table = mahjong.services.table._select_wall_to_open(
             table=self.table,
-            dealer_wind=models.WIND_EAST,
+            dealer_wind=WIND_EAST,
             dices=(2, 4, 5)  # 11
         )
 
@@ -30,12 +30,12 @@ class MahjongTableSelectWallToOpenTestCase(unittest.TestCase):
         # East > 9
         # South > 10
         # West > 11
-        self.assertEqual(table.current_wall, models.WIND_WEST)
+        self.assertEqual(table.wall_wind, WIND_WEST)
 
     def test_correct_wall_is_selected_non_east_dealer(self):
         table = mahjong.services.table._select_wall_to_open(
             table=self.table,
-            dealer_wind=models.WIND_WEST,
+            dealer_wind=WIND_WEST,
             dices=(1, 1, 1)  # 3
         )
 
@@ -44,16 +44,16 @@ class MahjongTableSelectWallToOpenTestCase(unittest.TestCase):
         # West > 1
         # North > 2
         # East > 3
-        self.assertEqual(table.current_wall, models.WIND_EAST)
+        self.assertEqual(table.wall_wind, WIND_EAST)
 
     def test_lower_than_four(self):
         table = mahjong.services.table._select_wall_to_open(
             table=self.table,
-            dealer_wind=models.WIND_EAST,
+            dealer_wind=WIND_EAST,
             dices=(1, 1, 1)  # 3
         )
 
         # East > 1
         # South > 2
         # West > 3
-        self.assertEqual(table.current_wall, models.WIND_WEST)
+        self.assertEqual(table.wall_wind, WIND_WEST)
